@@ -33,10 +33,9 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { buildDossier } from "./vendor/makefun-board.ts";
 import {
+  analyzeSnapshot,
   boardDocument,
   boardIssue,
-  buildRadar,
-  calibrateMultiples,
   dataScript,
   parseSnapshot,
 } from "./lib/model.ts";
@@ -137,8 +136,8 @@ function rollup(rows: BoardRow[], snap: SnapshotFile): string {
 }
 
 const snapshot: SnapshotFile = parseSnapshot(readFileSync(snapshotPath(), "utf8"));
-const calibration = calibrateMultiples(snapshot);
-const rows: BoardRow[] = buildRadar(snapshot);
+const analysis = analyzeSnapshot(snapshot);
+const rows: BoardRow[] = analysis.rows;
 const refusal = boardIssue(rows, snapshot);
 if (refusal !== null) {
   abort(`the model wrote a board the gate refuses: ${refusal}`, 1);
@@ -146,8 +145,8 @@ if (refusal !== null) {
 
 const outDir = outputPath();
 mkdirSync(outDir, { recursive: true });
-writeFileSync(join(outDir, "board.json"), `${JSON.stringify(boardDocument(rows, calibration), null, 2)}\n`);
-writeFileSync(join(outDir, "data.js"), dataScript(rows, snapshot));
+writeFileSync(join(outDir, "board.json"), `${JSON.stringify(boardDocument(analysis), null, 2)}\n`);
+writeFileSync(join(outDir, "data.js"), dataScript(analysis, snapshot));
 
 const dashboardFiles = mirrorFiles(join(REPO_ROOT, "dashboard"), join(outDir, "dashboard"));
 const screenshotFiles = mirrorFiles(join(REPO_ROOT, "screenshots"), join(outDir, "screenshots"));
@@ -163,9 +162,13 @@ if (screenshotFiles < SCREENSHOTS_REQUIRED) {
 const dossier = buildDossier(outDir, { text_max_bytes: DOSSIER_TEXT_CAP });
 writeFileSync(join(outDir, "dossier.json"), dossier);
 
+const loo = analysis.validation.schemes[0]!;
 process.stdout.write(
   `token-radar: ${snapshot.protocols.length} protocols, ${snapshot.watchlist.length} on the watchlist — ${rollup(rows, snapshot)}\n` +
-    `token-radar: global median ${calibration.tuning.global_median}; wrote board.json, data.js, ` +
+    `token-radar: curve slope ${analysis.fit.slope}, intercept ${analysis.fit.intercept}, R2 ${analysis.fit.r2} over ${analysis.fit.n} comps; ` +
+    `LOO full-model error ${loo.scores.full.med_abs_log_err} (baseline ${loo.scores.baseline.med_abs_log_err}), band x${analysis.bandFactor}; ` +
+    `verdicts farm ${analysis.verdictCounts.farm} / thin ${analysis.verdictCounts.thin} / skip ${analysis.verdictCounts.skip}\n` +
+    `token-radar: wrote board.json, data.js, ` +
     `dashboard/ (${dashboardFiles} files), screenshots/ (${screenshotFiles} images), ` +
     `dossier.json (${dossier.length} bytes) to ${outDir}\n`,
 );

@@ -133,3 +133,35 @@ dialog button { padding: 7px 14px; border: 1px solid var(--accent); background: 
 .bench { width: 100%; font-size: 13px; }
 .bench th { cursor: default; }
 .bench td, .bench th { padding: 5px 8px; }
+.bench .sub { color: var(--muted); font-size: 12px; }
+
+.evidence-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+.evidence-grid .note { margin-bottom: 0; }
+#evidencePanel h2 { margin-bottom: 6px; }
+#verdictLine { margin-top: 14px; }
+
+.range { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.verdict {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 20px;
+  padding: 2px 8px;
+}
+.verdict-farm { color: #fff; background: var(--accent); }
+.verdict-thin { color: #7a5b00; background: #f5e6b8; }
+.verdict-skip { color: var(--muted); background: #e8edea; }
+
+#curveChart svg { width: 100%; height: auto; display: block; background: var(--canvas); border-radius: 8px; }
+#curveChart .grid { stroke: var(--border); stroke-width: 1; }
+#curveChart .dot { fill: var(--accent); opacity: 0.65; }
+#curveChart .fit { stroke: var(--ink); stroke-width: 2; }
+#curveChart .band { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 5 4; }
+#curveChart .axis { font-size: 10px; fill: var(--muted); text-anchor: middle; }
+#curveChart .axis-y { text-anchor: end; }
+#curveChart .axis-label { font-size: 11px; fill: var(--muted); font-weight: 600; }
+
+dialog .facts.econ dd { font-weight: 600; }

@@ -11,25 +11,44 @@
   <p class="kicker">Token launch radar · snapshot <span id="asOf">—</span></p>
   <h1>Which pre-token protocol is worth farming next?</h1>
   <p class="lede">Every protocol below records no token on DefiLlama. The board ranks them by
-  implied launch value — TVL times a category multiple, adjusted for growth, age and
-  chain breadth — with a concrete farm plan for each one. <span id="ledeStats"></span></p>
+  implied launch value from a fitted value curve — tested blind, then netted to dollars at
+  the low end of its own uncertainty band — with a concrete farm plan for each one.
+  <span id="ledeStats"></span></p>
   <p class="note" id="reconcile"></p>
   <p class="note" id="filterStatus" hidden></p>
 </header>
+<section class="panel" id="evidencePanel">
+  <h2>Evidence: the curve, tested blind</h2>
+  <p id="curveLine"></p>
+  <div class="evidence-grid">
+    <div>
+      <div id="evidenceTable"></div>
+      <p class="note" id="schemeNotes"></p>
+    </div>
+    <div>
+      <div id="curveChart"></div>
+      <p class="note">Each dot is one live-token comp. The solid line is the fitted curve;
+      the dashed lines are the uncertainty band from the leave-one-out error. Both axes are logarithmic.</p>
+    </div>
+  </div>
+  <p id="verdictLine"></p>
+  <p class="note" id="bandNote"></p>
+</section>
 <section class="panel" id="modelPanel">
   <h2>How the value is worked out</h2>
   <p id="modelText"></p>
+  <p id="econText"></p>
   <div class="sandbox">
     <label>Growth weight <input id="sbGrowth" type="number" step="0.1" min="0" max="1"></label>
     <label>Maturity floor <input id="sbFloor" type="number" step="0.05" min="0" max="0.9"></label>
     <label>Breadth step <input id="sbBreadth" type="number" step="0.01" min="0" max="0.2"></label>
-    <label>Global multiple × <input id="sbScale" type="number" step="0.1" min="0.5" max="2"></label>
+    <label>Curve × <input id="sbScale" type="number" step="0.1" min="0.5" max="2"></label>
     <button id="sbReset" type="button">Reset</button>
     <span class="sandbox-flag" id="sbFlag" hidden>Sandbox active — values differ from board.json</span>
   </div>
   <div id="benchmark"></div>
 </section>
-<section class="controls">
+<section class="controls" id="controls">
   <div class="tabs" role="tablist">
     <button id="tabPre" type="button" role="tab" aria-selected="true">Pre-token</button>
     <button id="tabLive" type="button" role="tab" aria-selected="false">Live token</button>
@@ -41,6 +60,10 @@
     <option value="0">All</option><option value="50000000">≥ $50M</option>
     <option value="10000000">≥ $10M</option><option value="5000000">≥ $5M</option>
   </select></label>
+  <label>Verdict <select id="fVerdict">
+    <option value="">All</option><option value="farm">Farm</option>
+    <option value="thin">Thin</option><option value="skip">Skip</option>
+  </select></label>
   <label class="check"><input id="fWatch" type="checkbox"> Watchlist only</label>
   <span class="count" id="rowCount"></span>
 </section>
@@ -48,8 +71,9 @@
   <table id="board">
     <thead><tr>
       <th data-sort="rank">#</th><th data-sort="name">Protocol</th><th data-sort="category">Category</th>
-      <th data-sort="tvl_usd">TVL</th><th data-sort="change_7d">7d</th><th data-sort="age_days">Age</th>
-      <th data-sort="implied_value_usd">Implied value</th><th data-sort="chains">Chains</th>
+      <th data-sort="tvl_usd">TVL</th><th data-sort="change_7d">7d</th>
+      <th data-sort="implied_value_usd">Implied value</th><th data-sort="verdict">Verdict</th>
+      <th data-sort="net_usd">Net</th><th data-sort="chains">Chains</th>
     </tr></thead>
     <tbody id="rows"></tbody>
   </table>
