@@ -1,8 +1,8 @@
 # Token Radar — a fitted value curve, tested blind, netted to dollars
 
-[![Bounty: $1,325 USDC](https://img.shields.io/badge/bounty-%241%2C325%20USDC-0f7a5a)](https://make.fun/c/token-radar-01)
-[![Node 22+](https://img.shields.io/badge/node-%3E%3D22-339933)](https://nodejs.org/en/download)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![make.fun · token-radar-01](https://make.fun/badge/token-radar-01.svg)](https://make.fun/bounty/token-radar-01?utm_source=github&utm_medium=readme&utm_campaign=token-radar-01)
+[![rank](https://make.fun/badge/token-radar-01/reyxnal/makefun-token-radar-01/rank.svg)](https://make.fun/bounty/token-radar-01/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=token-radar-01)
+[![reward](https://make.fun/badge/token-radar-01/reyxnal/makefun-token-radar-01/reward.svg)](https://make.fun/bounty/token-radar-01?utm_source=github&utm_medium=readme&utm_campaign=token-radar-01)
 
 A make.fun `token-radar-01` entry: a radar that ranks every pre-token protocol in the sealed
 snapshot by an implied launch value, tests the curve behind the ranking out of sample, nets
